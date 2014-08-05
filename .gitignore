@@ -1,0 +1,4 @@
+/app/View/Themed/
+/app/Config/config.php
+/app/Config/database.php
+/app/config/email.php
