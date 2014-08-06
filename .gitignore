@@ -1,4 +1,28 @@
-/app/View/Themed/
+##############
+# cake cache #
+##############
+/app/tmp/cache/models/*
+/app/tmp/cache/persistent/*
+/app/tmp/cache/views/*
+/app/tmp/cache/*
+/app/tmp/logs/*
+/app/tmp/sessions/*
+/app/tmp/tests/*
+
+##############
+# cms config #
+##############
 /app/Config/config.php
 /app/Config/database.php
 /app/config/email.php
+
+##########
+# medias #
+##########
+/app/webroot/files/uploads/
+/app/webroot/files/thumbs/
+
+##########
+# themes #
+##########
+/app/View/Themed/*
