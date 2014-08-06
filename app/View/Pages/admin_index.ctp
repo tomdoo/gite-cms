@@ -2,7 +2,7 @@
 	<h2>Pages manager</h2>
 </div>
 
-<?php echo $this->Html->link('<i class="glyphicon glyphicon-plus"></i> Add page', '/admin/pages/edit', array('escape' => false, 'class' => 'btn btn-default')); ?>
+<?php echo $this->Html->link('<i class="glyphicon glyphicon-plus"></i> Add page', array('prefix' => 'admin', 'controller' => 'pages', 'action' => 'edit'), array('escape' => false, 'class' => 'btn btn-default')); ?>
 
 <?php if (!empty($pages)) : ?>
 	<table class="table table-hover">

@@ -24,8 +24,11 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-	Router::connect('/', array('controller' => 'pages'));
 
+$install = Configure::check('Config.install') ? Configure::read('Config.install') : true;
+if ($install) {
+	Router::connect('/*', array('controller' => 'install'));
+} else {
 	Router::connect(
 		'/:language/:controller/:action/*',
 		array(),
@@ -44,7 +47,8 @@
 		array('language' => '[a-z]{3}')
 	);
 
-	//Router::connect('/pages/show/:slug', array('controller' => 'pages', 'action' => 'show'), array('pass' => array('slug'), 'slug' => '[a-z0-9\-]+'));
+	Router::connect('/', array('controller' => 'pages', 'action' => 'show'));
+}
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on

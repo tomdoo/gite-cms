@@ -32,14 +32,11 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<?php echo $this->Html->link('Administration', array('prefix' => 'admin', 'controller' => 'home'), array('class' => 'navbar-brand')); ?>
+				<?php echo $this->Html->link('Gîte CMS - Installation', array('prefix' => 'admin', 'controller' => 'home'), array('class' => 'navbar-brand')); ?>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><?php echo $this->Html->link('Configuration', array('prefix' => 'admin', 'controller' => 'configuration')); ?></li>
-					<li><?php echo $this->Html->link('Pages', array('prefix' => 'admin', 'controller' => 'pages')); ?></li>
-					<li><?php echo $this->Html->link('Bookings', array('prefix' => 'admin', 'controller' => 'bookings')); ?></li>
-					<li><?php echo $this->Html->link('Contacts', array('prefix' => 'admin', 'controller' => 'contacts')); ?></li>
+					<li><?php echo $this->Html->link('GitHub', 'https://github.com/tomdoo/gite-cms', array('target' => 'blank')); ?></li>
 				</ul>
 			</div>
 		</div>

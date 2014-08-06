@@ -1,8 +1,11 @@
 <?php
 Configure::write('Config', array(
+	'install' => true,
 	'paths' => array(
 		'mediaPath' => '/Users/td/Sites/la-roque/app/webroot/uploads/',
 	),
-	'defaultLanguage' => 'fra',
-	'languages' => array('fra' => 'Français', 'nld' => 'Nederlands'),
+	'defaultLanguage' => 'fra', // default language
+	'languages' => array('fra' => 'Français', 'nld' => 'Nederlands'), // all available languages
+	//'themes' => array('admin' => null, 'front' => 'LaRoque'),
+	'homepages' => array('fra' => 'accueil', 'nld' => 'home'),
 ));
