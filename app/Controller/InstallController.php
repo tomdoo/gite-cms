@@ -55,7 +55,7 @@ class InstallController extends AppController {
 
 		// default data check
 		$error = false;
-		if ($this->$query
+		//if ($this->$query
 		
 		// end of installation process
 		$success = 0;
