@@ -22,11 +22,26 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+// configuration files
 require_once 'config.php';
 
-if (Configure::check('Config.defaultLanguage')) {
-	Configure::write('Config.language', Configure::read('Config.defaultLanguage'));
+/*pr(Configure::read('Routing'));
+if (Configure::check('Config.languages')) {
+	$prefixes = array();
+	foreach (Configure::read('Config.languages') as $key => $value) {
+		$prefixes[] = $key;
+	}
+
+	if (Configure::check('Routing.prefixes')) {
+		$prefixes = array_merge(Configure::read('Routing.prefixes'), $prefixes);
+	}
+	Configure::write('Routing.prefixes', $prefixes);
 }
+pr(Configure::read('Routing'));*/
+
+/*if (Configure::check('Config.defaultLanguage')) {
+	Configure::write('Config.language', Configure::read('Config.defaultLanguage'));
+}*/
 
 // Setup a 'default' cache configuration for use in the application.
 Cache::config('default', array('engine' => 'File'));

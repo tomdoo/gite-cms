@@ -49,15 +49,15 @@ class Post extends AppModel {
 		return null;
 	}
 
-	/*public function getPageBySlug($slug) {
+	public function getPageBySlug($slug) {
 		$params = array();
-		$params['fields'] = array('title', 'slug', 'content');
 		$params['conditions']['Post.type'] = 'page';
-		$params['conditions']['Post.slug'] = $slug;
-		return $this->find('first', $params);
+		$params['conditions']['I18n__slug`.`content'] = $slug;
+		$page = $this->find('first', $params);
+		return $page;
 	}
 
-	public function getById($id) {
+	/*public function getById($id) {
 		$params = array();
 		$params['conditions']['Post.id'] = $id;
 		return $this->find('first', $params);

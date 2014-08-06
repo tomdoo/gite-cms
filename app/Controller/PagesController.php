@@ -3,11 +3,19 @@ class PagesController extends AppController {
 	public $uses = array('Post');
 
 	public function menu() {
-		$pages = $this->Post->getPagesTree(0, false);
+		$pages = $this->Post->getPagesTree(1, false);
 		return $pages;
 	}
 
-	public function show($slug) {
+	public function index() {
+		$pages = $this->Post->getPagesTree();
+		$this->set('pages', $pages);
+	}
+
+	public function show($slug = null) {
+		if (empty($slug)) {
+			$slug = Configure::read('Config.homepages.'.Configure::read('Config.language'));
+		}
 		if (!$page = $this->Post->getPageBySlug($slug)) {
 			throw new NotFoundException();
 		}
@@ -38,8 +46,6 @@ class PagesController extends AppController {
 			}
 		}
 
-		$conditions = array();
-		$conditions['Post.type'] = 'page';
 		$parentPages = $this->Post->generateTreeList();
 		$this->set('parentPages', $parentPages);
 

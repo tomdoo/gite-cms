@@ -18,7 +18,8 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>Titre</h1>
+			<h1>Gîte CMS</h1>
+			<?php echo $this->element('languages'); ?>
 			<?php echo $this->element('menu'); ?>
 		</div>
 		<div id="content">

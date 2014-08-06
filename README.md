@@ -9,3 +9,6 @@ Functionnalities
 - Pages hierarchy
 - Booking module
 - Contact form
+
+Install
+-------
