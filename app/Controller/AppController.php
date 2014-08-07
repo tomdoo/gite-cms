@@ -29,6 +29,7 @@ class AppController extends Controller {
 
 		$this->set('title_for_layout', $this->Config->getValue('title'));
 		$this->set('baseline', $this->Config->getValue('baseline'));
+		$this->set('language', Configure::read('Config.language'));
 	}
 
 	private function _setLanguage() {

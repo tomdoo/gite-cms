@@ -2,6 +2,34 @@
 class BookingsController extends AppController {
 	public $uses = array('Booking');
 
+	public function index($year = null, $month = null) {
+		if (empty($year)) {
+			$year = date('Y');
+		}
+		if (empty($month)) {
+			$month = date('m');
+		}
+
+		$monthTime = mktime(0,0,0,$month,1,$year);
+		$totalDays = date('t', $monthTime);
+		$dayOffset = date('w', $monthTime) - 1;
+		if ($dayOffset < 0) {
+			$dayOffset = $dayOffset + 7;
+		}
+
+
+		$days = array();
+		for ($i = 1; $i <= $totalDays; $i++) {
+			$days[$i] = $this->Booking->getDayStatus($year.'-'.$month.'-'.$i);
+		}
+
+		$this->set('year', $year);
+		$this->set('month', $month);
+		$this->set('monthTime', $monthTime);
+		$this->set('days', $days);
+		$this->set('dayOffset', $dayOffset);
+	}
+
 	public function admin_index() {
 		$bookings = $this->Paginate('Booking');
 		$this->set('bookings', $bookings);

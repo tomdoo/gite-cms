@@ -20,6 +20,10 @@ class PagesController extends AppController {
 			throw new NotFoundException();
 		}
 		$this->set('page', $page);
+		$this->set('page_title', $page['Post']['title']);
+		if (Configure::read('Config.homepages.'.Configure::read('Config.language')) == $slug) {
+			$this->set('page_homepage', true);
+		}
 	}
 
 	public function admin_index() {

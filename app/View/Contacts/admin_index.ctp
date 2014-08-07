@@ -16,10 +16,10 @@
 		<tbody>
 			<?php foreach ($contacts as $contact) : ?>
 				<tr>
-					<td><?php echo $this->Time->i18nFormat($contact['Contact']['created']); ?></td>
+					<td><?php echo $contact['Contact']['created']; ?></td>
 					<td><?php echo $contact['Contact']['name']; ?></td>
 					<td><?php echo $contact['Contact']['email']; ?></td>
-					<td><?php echo $contact['Contact']['subject']; ?></td>
+					<td>[<?php echo $title_for_layout; ?>] <?php echo ucfirst($contact['Contact']['type']); ?>: <?php echo $contact['Contact']['subject']; ?></td>
 					<td>
 						<?php echo $this->Html->link('<i class="glyphicon glyphicon-search"></i>', '/admin/contacts/show/'.$contact['Contact']['id'], array('escape' => false, 'class' => 'btn btn-default btn-sm')); ?>
 						<?php echo $this->Html->link('<i class="glyphicon glyphicon-envelope"></i>', 'mailto:'.$contact['Contact']['email'].'?subject='.rawurlencode($contact['Contact']['subject']).'&body='.rawurlencode($contact['Contact']['text']), array('escape' => false, 'class' => 'btn btn-default btn-sm')); ?>

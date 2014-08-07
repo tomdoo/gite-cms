@@ -4,15 +4,15 @@
 
 <dl class="dl-horizontal">
 	<dt>Date</dt>
-	<dd><?php echo $this->Time->i18nFormat($contact['Contact']['created']); ?></dd>
+	<dd><?php echo $contact['Contact']['created']; ?></dd>
 	<dt>Name</dt>
 	<dd><?php echo $contact['Contact']['name']; ?></dd>
 	<dt>Email</dt>
 	<dd><?php echo $contact['Contact']['email']; ?></dd>
 	<dt>Subject</dt>
-	<dd><?php echo $contact['Contact']['subject']; ?></dd>
+	<dd>[<?php echo $title_for_layout; ?>] <?php echo ucfirst($contact['Contact']['type']); ?>: <?php echo $contact['Contact']['subject']; ?></dd>
 	<dt>Text</dt>
-	<dd><?php echo $contact['Contact']['text']; ?></dd>
+	<dd><?php echo nl2br($contact['Contact']['text']); ?></dd>
 </dl>
 
 <div class="btn-toolbar" role="toolbar">

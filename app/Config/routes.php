@@ -37,7 +37,7 @@ if ($install) {
 
 	Router::connect(
 		'/:language/:controller/*',
-		array('action' => 'show', Configure::read('Config.homepages.'.Configure::read('Config.language'))),
+		array('action' => 'index', Configure::read('Config.homepages.'.Configure::read('Config.language'))),
 		array('language' => '[a-z]{3}')
 	);
 

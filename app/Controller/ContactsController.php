@@ -2,6 +2,21 @@
 class ContactsController extends AppController {
 	public $uses = array('Contact');
 
+	public function index() {
+		if ($this->request->is('post')) {
+			$this->request->data['Contact']['type'] = 'contact';
+			if ($this->Contact->save($this->request->data)) {
+				return $this->redirect(array('action' => 'end'));
+			} else {
+				$this->Session->setFlash('Some errors occured', 'error');
+			}
+		}
+	}
+
+	public function end() {
+
+	}
+
 	public function admin_index() {
 		$contacts = $this->Paginate('Contact');
 		$this->set('contacts', $contacts);
