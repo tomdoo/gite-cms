@@ -99,7 +99,7 @@ class InstallController extends AppController {
 			}
 			try {
 				$this->Post->create();
-				foreach (array('id', 'type', 'title', 'slug', 'content', 'order', 'online', 'parent_id', 'lft', 'rght', 'created', 'modifgied') as $field) {
+				foreach (array('id', 'type', 'title', 'slug', 'content', 'order', 'online', 'parent_id', 'lft', 'rght', 'created', 'modified') as $field) {
 					if (!in_array($field, array_keys($this->Post->schema()))) {
 						throw new CakeException('Missing field Post.'.$field);
 					}
