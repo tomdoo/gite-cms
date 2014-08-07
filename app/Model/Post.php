@@ -24,14 +24,6 @@ class Post extends AppModel {
 		return true;
 	}
 
-	/*public function getMenuPages() {
-		$params = array();
-		$params['fields'] = array('title', 'slug');
-		$params['conditions']['Post.type'] = 'page';
-		$params['conditions']['Post.online'] = true;
-		return $this->find('all', $params);
-	}*/
-
 	public function getPagesTree($parentId = 1, $includeParent = false) {
 		$params = array();
 		$params['fields'] = array('id', 'lft', 'rght');
@@ -56,28 +48,4 @@ class Post extends AppModel {
 		$page = $this->find('first', $params);
 		return $page;
 	}
-
-	/*public function getById($id) {
-		$params = array();
-		$params['conditions']['Post.id'] = $id;
-		return $this->find('first', $params);
-	}
-
-	public function getPageById($id) {
-		$params = array();
-		$params['fields'] = array('id', 'title', 'slug', 'content', 'online', 'order');
-		$params['conditions']['Post.id'] = $id;
-		$params['conditions']['Post.type'] = 'page';
-		return $this->find('first', $params);
-	}
-
-	public function getTitleById($id) {
-		$params = array();
-		$params['fields'] = array('title');
-		$params['conditions']['Post.id'] = $id;
-		if ($post = $this->find('first', $params)) {
-			return $post['Post']['title'];
-		}
-		return null;
-	}*/
 }

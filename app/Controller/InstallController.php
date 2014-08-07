@@ -1,6 +1,8 @@
 <?php
 class InstallController extends AppController {
 	public $layout = 'install';
+	public $uses = array('Post', 'Contact', 'Booking', 'Config', 'Toto');
+
 	public function index() {
 		$steps = array();
 
@@ -37,8 +39,6 @@ class InstallController extends AppController {
 			'status' => file_exists(ROOT.DS.APP_DIR.DS.'Config'.DS.'database.php') ? 'success' : 'danger',
 		);
 
-		$db = $this->getDataSource();
-		die();
 		// connect database file
 		$message = null;
 		App::uses('ConnectionManager', 'Model');
@@ -54,8 +54,61 @@ class InstallController extends AppController {
 		);
 
 		// default data check
-		$error = false;
-		if ($this->$query
+		$errors = array();
+		try {
+			$this->Booking->create();
+			foreach (array('id', 'from', 'to', 'full', 'details', 'created', 'modified') as $field) {
+				if (!in_array($field, array_keys($this->Booking->schema()))) {
+					throw new CakeException('Missing field Booking.'.$field);
+				}
+			}
+		} catch (CakeException $e) {
+			$errors[] = $e->getMessage();
+		}
+		try {
+			$this->Config->create();
+			foreach (array('id', 'name', 'value') as $field) {
+				if (!in_array($field, array_keys($this->Config->schema()))) {
+					throw new CakeException('Missing field Config.'.$field);
+				}
+			}
+			if (!$config = $this->Config->find('first', array('conditions' => array('Config.name' => 'title')))) {
+				throw new CakeException('The Config "title" is missing');
+			}
+			if (!$config = $this->Config->find('first', array('conditions' => array('Config.name' => 'baseline')))) {
+				throw new CakeException('The Config "baseline" is missing');
+			}
+		} catch (CakeException $e) {
+			$errors[] = $e->getMessage();
+		}
+		try {
+			$this->Contact->create();
+			foreach (array('id', 'type', 'name', 'email', 'subject', 'text', 'created', 'modified') as $field) {
+				if (!in_array($field, array_keys($this->Contact->schema()))) {
+					throw new CakeException('Missing field Contact.'.$field);
+				}
+			}
+		} catch (CakeException $e) {
+			$errors[] = $e->getMessage();
+		}
+		try {
+			$this->Post->create();
+			foreach (array('id', 'type', 'title', 'slug', 'content', 'order', 'online', 'parent_id', 'lft', 'rght', 'created', 'modified') as $field) {
+				if (!in_array($field, array_keys($this->Post->schema()))) {
+					throw new CakeException('Missing field Post.'.$field);
+				}
+			}
+			if (!$post = $this->Post->find('first', array('conditions' => array('Post.id' => 1)))) {
+				throw new CakeException('The first post was not found, this one is used as the parent off all the posts');
+			}
+		} catch (CakeException $e) {
+			$errors[] = $e->getMessage();
+		}
+		$steps[] = array(
+			'title' => 'Database check',
+			'text' => '<ul><li>'.implode('</li><li>', $errors).'</li></ul>',
+			'status' => empty($errors) ? 'success' : 'danger',
+		);
 		
 		// end of installation process
 		$success = 0;
