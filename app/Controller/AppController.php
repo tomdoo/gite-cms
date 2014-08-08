@@ -30,6 +30,7 @@ class AppController extends Controller {
 		$this->set('title_for_layout', $this->Config->getValue('title'));
 		$this->set('baseline', $this->Config->getValue('baseline'));
 		$this->set('language', Configure::read('Config.language'));
+		$this->set('googleTrackingId', $this->Config->getValue('google_analytics_id'));
 	}
 
 	private function _setLanguage() {

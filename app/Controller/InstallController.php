@@ -109,6 +109,9 @@ class InstallController extends AppController {
 				if (!$config = $this->Config->find('first', array('conditions' => array('Config.name' => 'baseline')))) {
 					throw new CakeException('The Config "baseline" is missing');
 				}
+				if (!$config = $this->Config->find('first', array('conditions' => array('Config.name' => 'google_tracking_id')))) {
+					throw new CakeException('The Config "google_tracking_id" is missing');
+				}
 			} catch (CakeException $e) {
 				$errors[] = $e->getMessage();
 			}
