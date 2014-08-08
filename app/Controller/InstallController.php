@@ -3,7 +3,7 @@ class InstallController extends AppController {
 	public $layout = 'install';
 	public $uses = array('Post', 'Contact', 'Booking', 'Config', 'Toto');
 
-	public function index($install, $sql = null) {
+	public function index($install = null, $sql = null) {
 		if ($sql == 'sql') {
 			if (Configure::check('Config.defaultLanguage')) {
 				$this->set('defaultLanguage', Configure::read('Config.defaultLanguage'));
@@ -11,6 +11,31 @@ class InstallController extends AppController {
 			$this->set('showSql', true);
 		} else {
 			$steps = array();
+
+			// check file perms
+			$folders = array(
+				ROOT.DS.APP_DIR.DS.'webroot'.DS.'files'.DS.'uploads',
+				ROOT.DS.APP_DIR.DS.'webroot'.DS.'files'.DS.'thumbs',
+				ROOT.DS.APP_DIR.DS.'tmp',
+				ROOT.DS.APP_DIR.DS.'tmp'.DS.'cache',
+				ROOT.DS.APP_DIR.DS.'tmp'.DS.'cache'.DS.'models',
+				ROOT.DS.APP_DIR.DS.'tmp'.DS.'cache'.DS.'persistent',
+				ROOT.DS.APP_DIR.DS.'tmp'.DS.'cache'.DS.'views',
+				ROOT.DS.APP_DIR.DS.'tmp'.DS.'logs',
+				ROOT.DS.APP_DIR.DS.'tmp'.DS.'sessions',
+				ROOT.DS.APP_DIR.DS.'tmp'.DS.'tests',
+			);
+			foreach ($folders as $folder) {
+				pr(substr(sprintf('%o', fileperms('/tmp')), -3));
+				if (!is_writable($folder)) {
+					$error = '<p>Are you sure this files are writeable ?</p><ul><li>'.implode('</li><li>', $folders).'</li></ul>';
+				}
+			}
+			$steps[] = array(
+				'title' => 'Check file permissions',
+				'text' => empty($error) ? '' : $error,
+				'status' => empty($error) ? 'success' : 'danger',
+			);
 
 			// create config file
 			$steps[] = array(

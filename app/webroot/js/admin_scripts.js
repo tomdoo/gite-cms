@@ -8,12 +8,13 @@ $('document').ready(function() {
 	if ($('.wysiwyg').length > 0) {
 		tinyMCE.init({
 			selector: '.wysiwyg',
-			plugins: 'image responsivefilemanager',
+			plugins: 'image responsivefilemanager code link paste preview lists table',
 			external_filemanager_path: '/filemanager/',
 			filemanager_title: 'Responsive Filemanager',
 			external_plugins: {
 				filemanager: '/filemanager/plugin.min.js',
 			},
+			height: 500,
 		});
 	}
 

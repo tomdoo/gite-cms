@@ -25,23 +25,13 @@
 // configuration files
 require_once 'config.php';
 
-/*pr(Configure::read('Routing'));
-if (Configure::check('Config.languages')) {
-	$prefixes = array();
-	foreach (Configure::read('Config.languages') as $key => $value) {
-		$prefixes[] = $key;
-	}
-
-	if (Configure::check('Routing.prefixes')) {
-		$prefixes = array_merge(Configure::read('Routing.prefixes'), $prefixes);
-	}
-	Configure::write('Routing.prefixes', $prefixes);
-}
-pr(Configure::read('Routing'));*/
-
-/*if (Configure::check('Config.defaultLanguage')) {
+if (!Configure::check('Config.language') && Configure::check('Config.defaultLanguage')) {
 	Configure::write('Config.language', Configure::read('Config.defaultLanguage'));
-}*/
+}
+
+if (Configure::check('Config.debug')) {
+	Configure::write('debug', Configure::read('Config.debug'));
+}
 
 // Setup a 'default' cache configuration for use in the application.
 Cache::config('default', array('engine' => 'File'));

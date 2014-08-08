@@ -24,7 +24,7 @@
 		<div class="panel panel-success">
 			<div class="panel-heading">Installation completed</div>
 			<div class="panel-body">
-				<p>Now you can set the param "install" at false in the config.php file !</p>
+				<p>Now you can set the param "install" at false in the config.php file and begin creating your homepages on /admin/pages</p>
 			</div>
 		</div>
 	<?php endif; ?>

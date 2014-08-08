@@ -47,7 +47,7 @@ if ($install) {
 		array('language' => '[a-z]{3}')
 	);
 
-	Router::connect('/', array('controller' => 'pages', 'action' => 'show'));
+	Router::connect('/', array('language' => Configure::read('Config.language'), 'controller' => 'pages', 'action' => 'show'));
 }
 
 /**
