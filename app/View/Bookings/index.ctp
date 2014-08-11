@@ -1,4 +1,4 @@
-<h2>Bookings</h2>
+<h2><?php echo ___('bookings-title', 'Bookings'); ?></h2>
 
 <p>Date: <?php echo $year; ?>-<?php echo $month; ?></p>
 

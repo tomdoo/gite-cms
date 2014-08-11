@@ -1,11 +1,13 @@
 <?php
 class ContactsController extends AppController {
 	public $uses = array('Contact');
+	public $components = array('Emailing');
 
 	public function index() {
 		if ($this->request->is('post')) {
 			$this->request->data['Contact']['type'] = 'contact';
 			if ($this->Contact->save($this->request->data)) {
+				$this->Emailing->contact($this->Config->getValue('contact_email'), $this->request->data['Contact']);
 				return $this->redirect(array('action' => 'end'));
 			} else {
 				$this->Session->setFlash('Some errors occured', 'error');
@@ -14,7 +16,6 @@ class ContactsController extends AppController {
 	}
 
 	public function end() {
-
 	}
 
 	public function admin_index() {

@@ -24,10 +24,11 @@
 
 // configuration files
 require_once 'config.php';
-
-if (!Configure::check('Config.language') && Configure::check('Config.defaultLanguage')) {
+require_once 'translations.php';
+/*if (!Configure::check('Config.language') && Configure::check('Config.defaultLanguage')) {
+	pr('je rentre la');
 	Configure::write('Config.language', Configure::read('Config.defaultLanguage'));
-}
+}*/
 
 if (Configure::check('Config.debug')) {
 	Configure::write('debug', Configure::read('Config.debug'));

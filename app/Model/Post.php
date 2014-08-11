@@ -24,15 +24,21 @@ class Post extends AppModel {
 		return true;
 	}
 
-	public function getPagesTree($parentId = 1, $includeParent = false) {
+	public function getPagesTree($parentId = 1, $includeParent = false, $includeOffline = false) {
 		$params = array();
 		$params['fields'] = array('id', 'lft', 'rght');
 		$params['conditions']['Post.type'] = 'page';
 		$params['conditions']['Post.id'] = $parentId;
+		if (empty($includeOffline)) {
+			$params['conditions']['Post.online'] = true;
+		}
 		if ($parentPost = $this->find('first', $params)) {
 			$params = array();
 			$params['conditions']['or'][0]['and'][0]['Post.parent_id >='] = $parentPost['Post']['lft'];
 			$params['conditions']['or'][0]['and'][1]['Post.parent_id <='] = $parentPost['Post']['rght'];
+			if (empty($includeOffline)) {
+				$params['conditions']['Post.online'] = true;
+			}
 			if ($includeParent) {
 				$params['conditions']['or'][1]['Post.id'] = $parentPost['Post']['id'];
 			}
@@ -44,6 +50,7 @@ class Post extends AppModel {
 	public function getPageBySlug($slug) {
 		$params = array();
 		$params['conditions']['Post.type'] = 'page';
+		$params['conditions']['Post.online'] = true;
 		$params['conditions']['I18n__slug`.`content'] = $slug;
 		$page = $this->find('first', $params);
 		return $page;

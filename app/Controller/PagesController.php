@@ -3,7 +3,7 @@ class PagesController extends AppController {
 	public $uses = array('Post');
 
 	public function menu() {
-		$pages = $this->Post->getPagesTree(1, false);
+		$pages = $this->Post->getPagesTree();
 		return $pages;
 	}
 
@@ -27,7 +27,7 @@ class PagesController extends AppController {
 	}
 
 	public function admin_index() {
-		$pages = $this->Post->getPagesTree();
+		$pages = $this->Post->getPagesTree(1, false, true);
 		$this->set('pages', $pages);
 	}
 

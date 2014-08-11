@@ -36,10 +36,10 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><?php echo $this->Html->link('Configuration', array('prefix' => 'admin', 'controller' => 'configuration')); ?></li>
-					<li><?php echo $this->Html->link('Pages', array('prefix' => 'admin', 'controller' => 'pages')); ?></li>
-					<li><?php echo $this->Html->link('Bookings', array('prefix' => 'admin', 'controller' => 'bookings')); ?></li>
-					<li><?php echo $this->Html->link('Contacts', array('prefix' => 'admin', 'controller' => 'contacts')); ?></li>
+					<li><?php echo $this->Html->link('Configuration', array('prefix' => 'admin', 'controller' => 'configuration', 'action' => 'index')); ?></li>
+					<li><?php echo $this->Html->link('Pages', array('prefix' => 'admin', 'controller' => 'pages', 'action' => 'index')); ?></li>
+					<li><?php echo $this->Html->link('Bookings', array('prefix' => 'admin', 'controller' => 'bookings', 'action' => 'index')); ?></li>
+					<li><?php echo $this->Html->link('Contacts', array('prefix' => 'admin', 'controller' => 'contacts', 'action' => 'index')); ?></li>
 				</ul>
 			</div>
 		</div>

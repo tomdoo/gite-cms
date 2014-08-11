@@ -62,6 +62,13 @@ class InstallController extends AppController {
 					&& Configure::check('Config.languages')
 					&& Configure::check('Config.homepages')) ? 'success' : 'danger',
 			);
+
+			// create database file
+			$steps[] = array(
+				'title' => 'Create email file',
+				'text' => '<p>Copy <em>/app/Config/email.php.default</em> to <em>/app/Config/email.php</em></p>',
+				'status' => file_exists(ROOT.DS.APP_DIR.DS.'Config'.DS.'email.php') ? 'success' : 'danger',
+			);
 			
 			// create database file
 			$steps[] = array(
@@ -111,6 +118,9 @@ class InstallController extends AppController {
 				}
 				if (!$config = $this->Config->find('first', array('conditions' => array('Config.name' => 'google_tracking_id')))) {
 					throw new CakeException('The Config "google_tracking_id" is missing');
+				}
+				if (!$config = $this->Config->find('first', array('conditions' => array('Config.name' => 'contact_email')))) {
+					throw new CakeException('The Config "contact_email" is missing');
 				}
 			} catch (CakeException $e) {
 				$errors[] = $e->getMessage();
