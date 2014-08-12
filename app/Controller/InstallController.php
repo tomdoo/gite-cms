@@ -26,7 +26,6 @@ class InstallController extends AppController {
 				ROOT.DS.APP_DIR.DS.'tmp'.DS.'tests',
 			);
 			foreach ($folders as $folder) {
-				pr(substr(sprintf('%o', fileperms('/tmp')), -3));
 				if (!is_writable($folder)) {
 					$error = '<p>Are you sure this files are writeable ?</p><ul><li>'.implode('</li><li>', $folders).'</li></ul>';
 				}

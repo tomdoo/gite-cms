@@ -73,7 +73,9 @@ INSERT INTO `i18n` (`id`, `locale`, `model`, `foreign_key`, `field`, `content`) 
 (2, '<?php echo $defaultLanguage; ?>', 'Post', 1, 'slug', 'pages'),
 (3, '<?php echo $defaultLanguage; ?>', 'Post', 1, 'content', ''),
 (16, '<?php echo $defaultLanguage; ?>', 'Config', 1, 'value', 'Aveyron - Gîte de la Roque'),
-(17, '<?php echo $defaultLanguage; ?>', 'Config', 2, 'value', 'Bienvenue sur le site du gîte de la Roque');
+(17, '<?php echo $defaultLanguage; ?>', 'Config', 2, 'value', 'Bienvenue sur le site du gîte de la Roque'),
+(17, '<?php echo $defaultLanguage; ?>', 'Config', 3, 'value', ''),
+(17, '<?php echo $defaultLanguage; ?>', 'Config', 4, 'value', '');
 CREATE TABLE IF NOT EXISTS `posts` (
 `id` int(11) NOT NULL,
   `type` varchar(10) NOT NULL,

@@ -2,7 +2,7 @@
 Configure::write('Config', array(
 	'install' => true,
 	'paths' => array(
-		'mediaPath' => '/Users/td/Sites/la-roque/app/webroot/uploads/',
+		'mediaPath' => '',
 	),
 	'defaultLanguage' => 'fra', // default language
 	'languages' => array('fra' => 'Français', 'nld' => 'Nederlands'), // all available languages
