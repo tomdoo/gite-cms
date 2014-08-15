@@ -1,4 +1,5 @@
 <?php
+App::uses('AppModel', 'Model');
 class Translation extends AppModel {
 	public $useTable = 'i18n';
 

@@ -3,19 +3,17 @@ class ContactsController extends AppController {
 	public $uses = array('Contact');
 	public $components = array('Emailing');
 
-	public function index() {
+	public function index($end = null) {
 		if ($this->request->is('post')) {
 			$this->request->data['Contact']['type'] = 'contact';
 			if ($this->Contact->save($this->request->data)) {
 				$this->Emailing->contact($this->Config->getValue('contact_email'), $this->request->data['Contact']);
-				return $this->redirect(array('action' => 'end'));
+				return $this->redirect(array('action' => 'end', 1));
 			} else {
 				$this->Session->setFlash('Some errors occured', 'error');
 			}
 		}
-	}
-
-	public function end() {
+		$this->set('end', $end);
 	}
 
 	public function admin_index() {
@@ -23,7 +21,7 @@ class ContactsController extends AppController {
 		$this->set('contacts', $contacts);
 	}
 
-	public function admin_show($id = null) {
+	public function admin_view($id = null) {
 		if (!$contact = $this->Contact->getContactById($id)) {
 			return $this->redirect('/admin/contacts');
 		}

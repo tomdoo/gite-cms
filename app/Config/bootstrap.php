@@ -25,8 +25,6 @@
 // configuration files
 if (file_exists(ROOT.DS.APP_DIR.DS.'Config/config.php')) {
 	require_once 'config.php';
-} else {
-	require_once 'config.php.default';
 }
 include_once 'translations.php';
 /*if (!Configure::check('Config.language') && Configure::check('Config.defaultLanguage')) {

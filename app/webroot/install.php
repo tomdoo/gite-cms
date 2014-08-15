@@ -24,6 +24,19 @@ function chmod_r($Path, $rights) {
 	}
 	closedir($dp);
 }
+function hashPassword($string) {
+	if ($salt = getSecuritySalt()) {
+		$string = $salt . $string;
+	}
+	return sha1($string);
+}
+function getSecuritySalt() {
+	$content = file_get_contents(dirname(dirname(__FILE__)).'/Config/core.php');
+	$position = strpos($content, 'Security.salt') + 17;
+	$saltStart = substr($content, $position);
+	$salt = substr($saltStart, 0, strpos($saltStart, '\')'));
+	return $salt;
+}
 
 if (isset($_GET['start'])) {
 	$_SESSION['step'] = 1;
@@ -97,42 +110,48 @@ if (!empty($_SESSION['step'])) {
 		case 3:
 			// generate config file
 			if (!empty($_POST)) {
-				$title = !empty($_POST['title']) ? $_POST['title'] : 'My famous Gite';
-				$baseline = !empty($_POST['baseline']) ? $_POST['baseline'] : 'The cutest gite all around the world!';
-				$contact = !empty($_POST['contact']) ? $_POST['contact'] : 'contact@me.com';
+				if (!empty($_POST['password'])) {
+					$title = !empty($_POST['title']) ? $_POST['title'] : 'My famous Gite';
+					$baseline = !empty($_POST['baseline']) ? $_POST['baseline'] : 'The cutest gite all around the world!';
+					$contact = !empty($_POST['contact']) ? $_POST['contact'] : 'contact@me.com';
+					$password = hashPassword($_POST['password']);
 
-				$defaultLanguage = !empty($_POST['dl']) ? $_POST['dl'] : 'fra';
-				$languages = !empty($_POST['languages']) ? $_POST['languages'] : 'fra/Français/accueil;nld/Nederlands/home';
+					$defaultLanguage = !empty($_POST['dl']) ? $_POST['dl'] : 'fra';
+					$languages = !empty($_POST['languages']) ? $_POST['languages'] : 'fra/Français/accueil;nld/Nederlands/home';
 
 
-				$languages = explode(';', $languages);
-				$availableLanguages = array();
-				$homepages = array();
-				foreach ($languages as $language) {
-					$vars = explode('/', $language);
-					$availableLanguages[$vars[0]] = $vars[1];
-					$homepages[$vars[0]] = $vars[2];
-				}
-				$file = "<?php\nConfigure::write('Config', array(\n	'defaultLanguage' => '".$defaultLanguage."',\n	'languages' => array(";
-				foreach ($availableLanguages as $code => $language) {
-					$file .= "'".$code."' => '".$language."', ";
-				}
-				$file .= "),\n	'themes' => array('admin' => null, 'front' => null),\n	'homepages' => array(";
-				foreach ($homepages as $code => $page) {
-					$file .= "'".$code."' => '".$page."', ";
-				}
-				$file .= "),\n));";
-				if (file_put_contents('../Config/config.php', $file)) {
-					$_SESSION['step'] = 4;
-					$_SESSION['config']['defaultLanguage'] = $defaultLanguage;
-					$_SESSION['config']['languages'] = $availableLanguages;
-					$_SESSION['config']['homepages'] = $homepages;
-					$_SESSION['config']['title'] = $title;
-					$_SESSION['config']['baseline'] = $baseline;
-					$_SESSION['config']['contact'] = $contact;
-					header('location: install.php');
+					$languages = explode(';', $languages);
+					$availableLanguages = array();
+					$homepages = array();
+					foreach ($languages as $language) {
+						$vars = explode('/', $language);
+						$availableLanguages[$vars[0]] = $vars[1];
+						$homepages[$vars[0]] = $vars[2];
+					}
+					$file = "<?php\nConfigure::write('Config', array(\n	'defaultLanguage' => '".$defaultLanguage."',\n	'languages' => array(";
+					foreach ($availableLanguages as $code => $language) {
+						$file .= "'".$code."' => '".$language."', ";
+					}
+					$file .= "),\n	'themes' => array('admin' => null, 'front' => null),\n	'homepages' => array(";
+					foreach ($homepages as $code => $page) {
+						$file .= "'".$code."' => '".$page."', ";
+					}
+					$file .= "),\n));";
+					if (file_put_contents('../Config/config.php', $file)) {
+						$_SESSION['step'] = 4;
+						$_SESSION['config']['defaultLanguage'] = $defaultLanguage;
+						$_SESSION['config']['languages'] = $availableLanguages;
+						$_SESSION['config']['homepages'] = $homepages;
+						$_SESSION['config']['title'] = $title;
+						$_SESSION['config']['baseline'] = $baseline;
+						$_SESSION['config']['contact'] = $contact;
+						$_SESSION['config']['password'] = $password;
+						header('location: install.php');
+					} else {
+						$error = 'Impossible to write file app/Config/config.php';
+					}
 				} else {
-					$error = 'Impossible to write file app/Config/config.php';
+					$error = 'Please enter a password';
 				}
 			}
 			break;
@@ -146,16 +165,18 @@ if (!empty($_SESSION['step'])) {
 				$mysqli->query("CREATE TABLE IF NOT EXISTS `contacts` (`id` int(11) NOT NULL AUTO_INCREMENT, `type` varchar(10) NOT NULL DEFAULT 'contact', `name` varchar(150) NOT NULL, `email` varchar(100) NOT NULL, `subject` varchar(100) NOT NULL, `text` text NOT NULL, `created` datetime NOT NULL, `modified` datetime NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
 				$mysqli->query("CREATE TABLE IF NOT EXISTS `i18n` (`id` int(10) NOT NULL AUTO_INCREMENT, `locale` varchar(6) NOT NULL, `model` varchar(255) NOT NULL, `foreign_key` int(10) NOT NULL, `field` varchar(255) NOT NULL, `content` text, PRIMARY KEY (id)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
 				$mysqli->query("CREATE TABLE IF NOT EXISTS `posts` (`id` int(11) NOT NULL AUTO_INCREMENT, `type` varchar(10) NOT NULL, `title` varchar(150) DEFAULT NULL, `slug` varchar(150) DEFAULT NULL, `content` text NOT NULL, `order` int(11) DEFAULT NULL, `online` tinyint(1) NOT NULL DEFAULT '0', `parent_id` int(11) DEFAULT NULL, `lft` int(11) NOT NULL, `rght` int(11) NOT NULL, `created` datetime NOT NULL, `modified` datetime NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
+				$mysqli->query("CREATE TABLE IF NOT EXISTS `users` (`id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(50), `password` varchar(255), `role` varchar(20), `created` datetime NOT NULL, `modified` datetime NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
 				$mysqli->query("INSERT INTO `configs` (`name`, `value`) VALUES ('title', '".$_SESSION['config']['title']."')");
 				$mysqli->query("INSERT INTO `configs` (`name`, `value`) VALUES ('baseline', '".$_SESSION['config']['baseline']."')");
 				$mysqli->query("INSERT INTO `configs` (`name`, `value`) VALUES ('contact_email', '".$_SESSION['config']['contact']."')");
 				$mysqli->query("INSERT INTO `configs` (`name`, `value`) VALUES ('google_tracking_id', '');");
+				$mysqli->query("INSERT INTO `users` (`username`, `password`, `role`, `created`, `modified`) VALUES ('".$_SESSION['config']['contact']."', '".$_SESSION['config']['password']."', 'admin', '".date('Y-m-d H:i:s')."', '".date('Y-m-d H:i:s')."');");
 				$mysqli->query("INSERT INTO `posts` (`type`, `title`, `slug`, `content`, `order`, `online`, `parent_id`, `lft`, `rght`, `created`, `modified`) VALUES ('page', 'Pages', 'pages', '<p>Contenu</p>', NULL, 1, 0, 1, 4, '".date('Y-m-d H:i:s')."', '".date('Y-m-d H:i:s')."');");
 				$mysqli->query("INSERT INTO `posts` (`type`, `title`, `slug`, `content`, `order`, `online`, `parent_id`, `lft`, `rght`, `created`, `modified`) VALUES ('page', '".ucfirst($_SESSION['config']['homepages'][$_SESSION['config']['defaultLanguage']])."', '".$_SESSION['config']['homepages'][$_SESSION['config']['defaultLanguage']]."', '<p>Homepage content</p>', 1, 1, 1, 2, 3, '".date('Y-m-d H:i:s')."', '".date('Y-m-d H:i:s')."');");
 				foreach ($_SESSION['config']['languages'] as $code => $language) {
 					$mysqli->query("INSERT INTO `i18n` (`locale`, `model`, `foreign_key`, `field`, `content`) VALUES ('".$code."', 'Config', 1, 'value', '".$_SESSION['config']['title']."')");
 					$mysqli->query("INSERT INTO `i18n` (`locale`, `model`, `foreign_key`, `field`, `content`) VALUES ('".$code."', 'Config', 2, 'value', '".$_SESSION['config']['baseline']."')");
-					$mysqli->query("INSERT INTO `i18n` (`locale`, `model`, `foreign_key`, `field`, `content`) VALUES ('".$code."', 'Config', 3, 'value', '".$_SESSION['config']['contact_email']."')");
+					$mysqli->query("INSERT INTO `i18n` (`locale`, `model`, `foreign_key`, `field`, `content`) VALUES ('".$code."', 'Config', 3, 'value', '".$_SESSION['config']['contact']."')");
 					$mysqli->query("INSERT INTO `i18n` (`locale`, `model`, `foreign_key`, `field`, `content`) VALUES ('".$code."', 'Config', 4, 'value', '');");
 					$mysqli->query("INSERT INTO `i18n` (`locale`, `model`, `foreign_key`, `field`, `content`) VALUES ('".$code."', 'Post', 1, 'title', 'Pages')");
 					$mysqli->query("INSERT INTO `i18n` (`locale`, `model`, `foreign_key`, `field`, `content`) VALUES ('".$code."', 'Post', 1, 'slug', 'pages')");
@@ -257,7 +278,7 @@ if (!empty($_SESSION['step'])) {
 				</div>
 			</form>
 		<?php elseif ($step == 3) : ?>
-			<h1>Step 3 : Generate configuration file</h1>
+			<h1>Step 3 : Generate configuration</h1>
 			<form class="form-horizontal" method="post" action="install.php">
 				<div class="form-group">
 					<label for="title" class="col-sm-2 control-label">Site title</label>
@@ -272,9 +293,15 @@ if (!empty($_SESSION['step'])) {
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="contact" class="col-sm-2 control-label">Contact email</label>
+					<label for="contact" class="col-sm-2 control-label">Admin email</label>
 					<div class="col-sm-10">
 						<input name="contact" type="text" class="form-control" id="contact" placeholder="contact@me.com">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-sm-2 control-label">Admin password</label>
+					<div class="col-sm-10">
+						<input name="password" type="text" class="form-control" id="password">
 					</div>
 				</div>
 				<div class="form-group">

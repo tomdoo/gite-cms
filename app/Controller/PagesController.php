@@ -12,7 +12,7 @@ class PagesController extends AppController {
 		$this->set('pages', $pages);
 	}
 
-	public function show($slug = null) {
+	public function view($slug = null) {
 		if (empty($slug)) {
 			$slug = Configure::read('Config.homepages.'.Configure::read('Config.language'));
 		}

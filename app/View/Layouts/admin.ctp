@@ -37,9 +37,13 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li><?php echo $this->Html->link('Configuration', array('prefix' => 'admin', 'controller' => 'configuration', 'action' => 'index')); ?></li>
+					<li><?php echo $this->Html->link('Users', array('prefix' => 'admin', 'controller' => 'users', 'action' => 'index')); ?></li>
 					<li><?php echo $this->Html->link('Pages', array('prefix' => 'admin', 'controller' => 'pages', 'action' => 'index')); ?></li>
 					<li><?php echo $this->Html->link('Bookings', array('prefix' => 'admin', 'controller' => 'bookings', 'action' => 'index')); ?></li>
 					<li><?php echo $this->Html->link('Contacts', array('prefix' => 'admin', 'controller' => 'contacts', 'action' => 'index')); ?></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><?php echo $this->Html->link('Log out', array('admin' => false, 'controller' => 'users', 'action' => 'logout')); ?></li>
 				</ul>
 			</div>
 		</div>
