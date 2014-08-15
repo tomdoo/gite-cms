@@ -8,7 +8,7 @@ class ContactsController extends AppController {
 			$this->request->data['Contact']['type'] = 'contact';
 			if ($this->Contact->save($this->request->data)) {
 				$this->Emailing->contact($this->Config->getValue('contact_email'), $this->request->data['Contact']);
-				return $this->redirect(array('action' => 'end', 1));
+				return $this->redirect(array('action' => 'index', 1));
 			} else {
 				$this->Session->setFlash('Some errors occured', 'error');
 			}

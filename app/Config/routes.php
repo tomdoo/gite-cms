@@ -43,7 +43,7 @@ Router::connect(
 	array('language' => '[a-z]{3}')
 );
 
-Router::connect('/', array('language' => Configure::read('Config.language'), 'controller' => 'pages', 'action' => 'view'));
+Router::connect('/', array('language' => Configure::read('Config.defaultLanguage'), 'controller' => 'pages', 'action' => 'view'));
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
