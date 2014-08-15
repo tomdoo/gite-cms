@@ -25,30 +25,25 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 
-$install = Configure::check('Config.install') ? Configure::read('Config.install') : true;
-if ($install) {
-	Router::connect('/*', array('controller' => 'install'));
-} else {
-	Router::connect(
-		'/:language/:controller/:action/*',
-		array(),
-		array('language' => '[a-z]{3}')
-	);
+Router::connect(
+	'/:language/:controller/:action/*',
+	array(),
+	array('language' => '[a-z]{3}')
+);
 
-	Router::connect(
-		'/:language/:controller/*',
-		array('action' => 'index', Configure::read('Config.homepages.'.Configure::read('Config.language'))),
-		array('language' => '[a-z]{3}')
-	);
+Router::connect(
+	'/:language/:controller/*',
+	array('action' => 'index', Configure::read('Config.homepages.'.Configure::read('Config.language'))),
+	array('language' => '[a-z]{3}')
+);
 
-	Router::connect(
-		'/:language/*',
-		array('controller' => 'pages', 'action' => 'show', Configure::read('Config.homepages.'.Configure::read('Config.language'))),
-		array('language' => '[a-z]{3}')
-	);
+Router::connect(
+	'/:language/*',
+	array('controller' => 'pages', 'action' => 'show', Configure::read('Config.homepages.'.Configure::read('Config.language'))),
+	array('language' => '[a-z]{3}')
+);
 
-	Router::connect('/', array('language' => Configure::read('Config.language'), 'controller' => 'pages', 'action' => 'show'));
-}
+Router::connect('/', array('language' => Configure::read('Config.language'), 'controller' => 'pages', 'action' => 'show'));
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
