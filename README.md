@@ -19,4 +19,4 @@ Install
 - Create database
 - Copy all the files into your webroot folder
 - Go to http://domain.com/install.php and follow the process
-- Delete install.php
+- Delete app/webroot/install.php
