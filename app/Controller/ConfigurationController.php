@@ -2,6 +2,12 @@
 class ConfigurationController extends AppController {
 	public $uses = array('Config');
 
+	public function languages() {
+		if (Configure::check('Config.languages')) {
+			return Configure::read('Config.languages');
+		}
+	}
+
 	public function admin_index() {
 		$configs = $this->Config->find('all');
 		$this->set('configs', $configs);
